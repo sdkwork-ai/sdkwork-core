@@ -111,9 +111,13 @@ export function parseJwtPayload(token: string): Record<string, unknown> | undefi
   if (parts.length < 2) {
     return undefined;
   }
+  const payloadPart = parts[1];
+  if (!payloadPart) {
+    return undefined;
+  }
 
   try {
-    const normalized = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const normalized = payloadPart.replace(/-/g, "+").replace(/_/g, "/");
     const padded = normalized.padEnd(
       normalized.length + ((4 - (normalized.length % 4 || 4)) % 4),
       "=",
