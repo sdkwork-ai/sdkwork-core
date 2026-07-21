@@ -4,7 +4,8 @@
   "packageManager": "pnpm@10.33.0",
   "pnpm": {
     "overrides": {
-      "@sdkwork/sdk-common": "workspace:*"
+      "@sdkwork/sdk-common": "workspace:*",
+      "esbuild": "0.28.1"
     }
   },
   "scripts": {
