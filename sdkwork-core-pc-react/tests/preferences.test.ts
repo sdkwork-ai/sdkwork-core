@@ -228,7 +228,7 @@ describe("shell preferences", () => {
     });
   });
 
-  it("defaults to claw-aligned lobster theme color and preserves a system locale preference", async () => {
+  it("defaults to cloud-aligned lobster theme color and preserves a system locale preference", async () => {
     const {
       configurePcReactRuntime,
       readPcReactShellPreferences,
@@ -248,7 +248,7 @@ describe("shell preferences", () => {
     });
   });
 
-  it("accepts claw tech-blue as a valid shell theme color", async () => {
+  it("accepts cloud tech-blue as a valid shell theme color", async () => {
     const {
       configurePcReactRuntime,
       readPcReactShellPreferences,
