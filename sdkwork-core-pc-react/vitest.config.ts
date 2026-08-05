@@ -4,12 +4,6 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      "@sdkwork/sdk-common": path.resolve(
-        __dirname,
-        "../../sdkwork-sdk-commons/sdkwork-sdk-common-typescript/src/index.ts"
-      )
-    }
-  },
   test: {
     environment: "jsdom",
     globals: true
