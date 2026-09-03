@@ -74,7 +74,35 @@ export function safeStringifyJson(value: unknown): string {
   return JSON.stringify(value);
 }
 
+/**
+ * Reads the dev:cloud local platform gateway anchor
+ * (APP_RUNTIME_TOPOLOGY_SPEC section 4.2, SDK_SPEC section 5.1 step 2).
+ * Browser builds receive it as a VITE_-prefixed variable; dev servers and
+ * node-side callers receive the server-side key. Absent means "not running
+ * dev:cloud", so callers fall back to the environment domain family.
+ */
+function readLocalGatewayAnchor(): string {
+  const browserEnv = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env;
+  const processEnv = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env;
+  return (
+    normalizeUrl(browserEnv?.VITE_SDKWORK_LOCAL_PLATFORM_API_GATEWAY_HTTP_URL)
+    || normalizeUrl(processEnv?.VITE_SDKWORK_LOCAL_PLATFORM_API_GATEWAY_HTTP_URL)
+    || normalizeUrl(processEnv?.SDKWORK_LOCAL_PLATFORM_API_GATEWAY_HTTP_URL)
+    || ""
+  );
+}
+
 export function resolveDefaultBaseUrl(env: PcReactRuntimeEnv): string {
+  // APP_RUNTIME_TOPOLOGY_SPEC section 4.2 / SDK_SPEC section 5.1 step 2:
+  // dev:cloud binds the local platform gateway (ip:port); the environment
+  // domain families stay build/deploy defaults.
+  if (env === "development") {
+    const localGateway = readLocalGatewayAnchor();
+    if (localGateway) {
+      return localGateway;
+    }
+  }
+
   switch (env) {
     case "production":
       return "https://api.sdkwork.com";
