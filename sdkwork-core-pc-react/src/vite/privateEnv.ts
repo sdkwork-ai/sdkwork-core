@@ -1,6 +1,9 @@
+// base-url-check: exempt (Node-side Vite define-key constants for private
+// SSR/server build env injection; not a browser base-url resolution point,
+// see ENVIRONMENT_SPEC §5.1.4.1)
 export const SDKWORK_VITE_PRIVATE_ENV_DEFINE_KEYS = {
   accessToken: "process.env.SDKWORK_ACCESS_TOKEN",
-  apiBaseUrl: "process.env.SDKWORK_API_BASE_URL",
+  apiBaseUrl: "process.env.SDKWORK_API_BASE_URL", // base-url-check: exempt (Node-side Vite private define key, §5.1.4.1)
   timeout: "process.env.SDKWORK_TIMEOUT",
   platform: "process.env.SDKWORK_PLATFORM",
 } as const;
@@ -10,6 +13,7 @@ export function buildSdkworkVitePrivateEnvDefine(
 ): Record<string, string> {
   return {
     [SDKWORK_VITE_PRIVATE_ENV_DEFINE_KEYS.accessToken]: JSON.stringify(env.SDKWORK_ACCESS_TOKEN ?? ""),
+    // base-url-check: exempt (Node-side Vite private define mapping, §5.1.4.1)
     [SDKWORK_VITE_PRIVATE_ENV_DEFINE_KEYS.apiBaseUrl]: JSON.stringify(env.SDKWORK_API_BASE_URL ?? ""),
     [SDKWORK_VITE_PRIVATE_ENV_DEFINE_KEYS.timeout]: JSON.stringify(env.SDKWORK_TIMEOUT ?? ""),
     [SDKWORK_VITE_PRIVATE_ENV_DEFINE_KEYS.platform]: JSON.stringify(env.SDKWORK_PLATFORM ?? ""),

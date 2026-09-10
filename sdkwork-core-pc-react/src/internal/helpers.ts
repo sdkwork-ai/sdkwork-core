@@ -1,4 +1,5 @@
 import type { PcReactAuthMode, PcReactRuntimeEnv } from "./contracts";
+import { getApiHostForEnvironment, getBrand } from '@sdkwork/sdk-common';
 
 const DEFAULT_TIMEOUT = 30_000;
 
@@ -103,17 +104,17 @@ export function resolveDefaultBaseUrl(env: PcReactRuntimeEnv): string {
     }
   }
 
-  switch (env) {
-    case "production":
-      return "https://api.sdkwork.com";
-    case "test":
-      return "https://api-test.sdkwork.com";
-    case "staging":
-      return "https://staging-api.sdkwork.com";
-    case "development":
-    default:
-      return "https://api-dev.sdkwork.com";
-  }
+  // ENVIRONMENT_SPEC.md §6.3: the api[-<env>].<brand> family host is derived
+  // from the current page brand through the shared @sdkwork/sdk-common
+  // helpers instead of a local domain table (built pages: same brand family
+  // as the serving edge; pnpm dev without a local gateway anchor falls back
+  // to the dev family of the configured brand domain).
+  const brand = getBrand(
+    typeof window !== "undefined" && window.location?.hostname
+      ? window.location.hostname
+      : "sdkwork.com",
+  );
+  return `https://${getApiHostForEnvironment(env === "development" ? "dev" : env, brand)}`;
 }
 
 export function resolveDefaultImWsUrl(baseUrl: string): string {
