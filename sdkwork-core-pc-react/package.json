@@ -66,19 +66,19 @@
     "react-dom": ">=18.2.0"
   },
   "dependencies": {
-    "@sdkwork/sdk-common": "^1.0.3"
+    "@sdkwork/sdk-common": "workspace:*"
   },
   "devDependencies": {
-    "@testing-library/react": "^16.3.2",
+    "@testing-library/react": "^16.3.3",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "jsdom": "^29.0.1",
+    "jsdom": "^29.1.1",
     "react": "catalog:",
     "react-dom": "catalog:",
     "typescript": "catalog:",
     "vite": "8.1.5",
     "vite-plugin-dts": "catalog:",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.12"
   },
   "publishConfig": {
     "access": "public",
